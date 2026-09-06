@@ -1,12 +1,27 @@
 const IMAGE_MAP = {
-  'textured-exterior-roller-1788614148971.JPG': 'Textured Exterior Roller.JPG',
-  'microfibre-interior-roller-1788614203451.JPG': 'Microfibre Interior Roller.JPG',
-  'high-density-foam-roller-1788614352935.JPG': 'High-Density Foam Roller.JPG',
-  'specialty-rollers-1788614335430.JPG': 'Specialty Rollers.JPG',
-  'exterior-fabric-roller-1788614319070.JPG': 'Exterior Fabric Roller.JPG',
-  'interior-fabric-roller-1788614298280.JPG': 'Interior Fabric Roller.JPG',
-  'polyether-foam-roller-1788614272980.JPG': 'Polyether Foam Roller.JPG',
-  'polyster-foam-roller-1788614397949.JPG': 'Polyster Foam Roller.JPG',
+  'textured-exterior-roller-1788614148971.JPG':
+    'Textured Exterior Roller.JPG',
+
+  'microfibre-interior-roller-1788614203451.JPG':
+    'Microfibre Interior Roller.JPG',
+
+  'high-density-foam-roller-1788614352935.JPG':
+    'High-Density Foam Roller.JPG',
+
+  'specialty-rollers-1788614335430.JPG':
+    'Specialty Rollers.JPG',
+
+  'exterior-fabric-roller-1788614319070.JPG':
+    'Exterior Fabric Roller.JPG',
+
+  'interior-fabric-roller-1788614298280.JPG':
+    'Interior Fabric Roller.JPG',
+
+  'polyether-foam-roller-1788614272980.JPG':
+    'Polyether Foam Roller.JPG',
+
+  'polyster-foam-roller-1788614397949.JPG':
+    'Polyster Foam Roller.JPG',
 };
 
 export default function ProductCard({ product, index = 0 }) {
@@ -17,11 +32,20 @@ export default function ProductCard({ product, index = 0 }) {
     description,
     desc,
     image,
+    imageUrl,
     c1,
     c2,
   } = product;
 
+  // Use backend image URL when available.
+  // Otherwise fall back to the existing frontend assets.
   const frontendImage = IMAGE_MAP[image] || image || '';
+
+  const finalImageUrl =
+    imageUrl ||
+    (frontendImage
+      ? `/assets/products/${encodeURIComponent(frontendImage)}`
+      : '');
 
   return (
     <div
@@ -31,14 +55,14 @@ export default function ProductCard({ product, index = 0 }) {
       <div
         className="product-visual"
         style={{
-          background: `linear-gradient(135deg, ${c1 || '#f5f5f5'}22, ${
-            c2 || '#ffffff'
-          }33)`,
+          background: `linear-gradient(135deg, ${
+            c1 || '#f5f5f5'
+          }22, ${c2 || '#ffffff'}33)`,
         }}
       >
-        {frontendImage && (
+        {finalImageUrl && (
           <img
-            src={`/assets/products/${encodeURIComponent(frontendImage)}`}
+            src={finalImageUrl}
             alt={name || 'Product'}
             className="product-image"
           />
@@ -62,6 +86,7 @@ export default function ProductCard({ product, index = 0 }) {
 
       <span className="product-link">
         View details
+
         <svg
           width="14"
           height="14"
